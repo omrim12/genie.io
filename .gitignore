@@ -1,0 +1,14 @@
+# pypi distribuitions
+dist
+
+# virtual environments
+venv*
+
+# __pycache__ directories
+__pycache__
+
+# Jetbrains .idea folder
+.idea
+
+# images dir
+images
