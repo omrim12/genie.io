@@ -8,7 +8,7 @@ from constants import (
 )
 
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 def analyze_food_img(food_img_path: str):

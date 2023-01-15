@@ -1,3 +1,5 @@
+import logging
+
 import os
 import numpy as np
 from CLI import CLI
@@ -8,19 +10,8 @@ from constants import (
     GINNY_NET_FNAME
 )
 
-# TODO: fix LOGGER.info output
-# TODO: check why there are less tags in train than test dataset
-
 
 def main():
-    X_train, X_test, y_train, y_test = load_food_101()
-    print(f'y_test = {np.unique(y_test)}')
-    print(f'y_train = {np.unique(y_train)}')
-
-    exit(1)
-
-    """
-    
     # Initialize CNN model if trained exists
     if os.path.exists(GINNY_NET_FNAME):
         ginny_model = load_model(GINNY_NET_FNAME)
@@ -41,9 +32,8 @@ def main():
         )
 
     # Run a CLI session based on the trained model
-    cli = CLI(cnn_model=ginny_model)
+    cli = CLI(ginny_model)
     cli.session()
-    """
 
 
 if __name__ == '__main__':

@@ -4,18 +4,17 @@ from img_utils import convert_image
 from concurrent.futures import ThreadPoolExecutor
 from constants import (
     IMAGE_SIZE,
-    IMAGES_META,
-    DATASET_SIZE
+    IMAGES_META
 )
 
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 def load_food_101():
-    LOGGER.warning("Loading Food 101 dataset...")
+    LOGGER.info("Loading Food 101 dataset...")
     # init datasets by types
-    # running datasets init processes in seperate
+    # running datasets init processes in separate
     # threads to reduce runtime
     executor = ThreadPoolExecutor()
     res1 = executor.submit(load_dataset, 'train')
@@ -52,8 +51,9 @@ def load_dataset(ds_type: str):
         dataset = np.concatenate((dataset, img_vect), axis=0)
         tags = np.concatenate((tags, img_tag), axis=0)
 
-        # limiting dataset size
-        if dataset.shape[0] == DATASET_SIZE:
-            break
+        # sampling dataset size
+        if dataset.shape[0] % 5000 == 0:
+            LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
+
     dataset_file.close()
     return dataset, tags

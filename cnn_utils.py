@@ -9,7 +9,7 @@ from constants import (
 )
 
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 def classify_client_input(image_array: np.array, cnn_model) -> str:
@@ -26,13 +26,13 @@ def cnn_train():
     # load train + test datasets
     X_train, X_test, y_train, y_test = load_food_101()
 
-    # a. Training CNN "same" using the fashion MNIST dataset
+    # a. Training CNN "same" using the food 101 dataset
     LOGGER.info("--- Running CNN 'same' learning session ---")
     same_model, same_loss, same_acc = train_by_type(X_train, y_train,
                                                     X_test, y_test,
                                                     conv_type='same')
 
-    # Training CNN "valid" using the fashion MNIST dataset
+    # Training CNN "valid" using the food 101 dataset
     LOGGER.info("--- Running CNN 'valid' learning session ---")
     valid_model, valid_loss, valid_acc = train_by_type(X_train, y_train,
                                                        X_test, y_test,
