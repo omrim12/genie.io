@@ -1,10 +1,6 @@
-import logging
-
 import os
-import numpy as np
 from CLI import CLI
 from cnn_utils import cnn_train
-from data_utils import load_food_101
 from keras.models import save_model, load_model
 from constants import (
     GINNY_NET_FNAME

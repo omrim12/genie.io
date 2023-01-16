@@ -12,8 +12,22 @@ logging.basicConfig(level=logging.INFO)
 
 
 def analyze_food_img(food_img_path: str):
-    # TODO: implement this
-    return None
+    try:
+        # convert image to CNN input
+        food_img = Image.open(food_img_path)
+        food_img = food_img.resize((IMAGE_SIZE, IMAGE_SIZE))
+        # TODO: prepare image for classifying ?
+
+        # scale pixel intensities in range 0-1
+        # and average RGB arrays
+        if len(np.array(food_img).shape) == 2:
+            food_img_arr = np.array([np.array(food_img) / 255.])
+        else:
+            food_img_arr = np.array([np.mean(np.array(food_img), axis=2) / 255.])
+        food_img_arr = food_img_arr.reshape([IMAGE_SIZE, IMAGE_SIZE, 1])
+        return food_img_arr
+    except FileNotFoundError:
+        return None
 
 
 def convert_image(image_id, image_tag):

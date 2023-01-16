@@ -49,6 +49,3 @@ class CLI:
                 "#> wish <food_image_path> - classify food input image\n"
                 "#> exit                        - exit CLI session\n"
                 "#> help / <any-other-command>  - show usage options\n")
-
-
-
