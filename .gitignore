@@ -13,3 +13,10 @@ __pycache__
 # images dir
 images
 *.zip
+
+# client input images
+*.jpg
+*.png
+
+# cnn model files
+*.h5

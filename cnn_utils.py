@@ -8,7 +8,8 @@ from data_utils import load_food_101
 from tag_utils import get_labels_list
 from constants import (
     IMAGE_SIZE,
-    FOOD_TYPES
+    FOOD_TYPES,
+    DATASET_BATCH
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -56,11 +57,10 @@ def train_by_type(
     model.summary()
 
     # Running NN simulation on trained model derived from CNN
-    print("\nRunning NN learning process...\n")
     model.compile(optimizer='rmsprop',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
-    model.fit(X_train, y_train, epochs=epoch, batch_size=batch_size)
+    model.fit(X_train, y_train, epochs=epoch, batch_size=batch_size)  # TODO: consider moving to DATASET_BATCH
 
     # Computing loss & accuracy over the entire test set
     test_loss, test_acc = model.evaluate(X_test, y_test)
@@ -79,14 +79,13 @@ def cnn_train():
     same_model, same_loss, same_acc = train_by_type(X_train, y_train,
                                                     X_test, y_test,
                                                     conv_type='same',
-                                                    epoch=100)
+                                                    epoch=70)
 
     # Training CNN "valid" using the food 101 dataset
     LOGGER.info("--- Running CNN 'valid' learning session ---")
     valid_model, valid_loss, valid_acc = train_by_type(X_train, y_train,
                                                        X_test, y_test,
-                                                       conv_type='valid',
-                                                       epoch=100)
+                                                       conv_type='valid')
 
     # Determine best model by model accuracy
     if valid_acc > same_acc:

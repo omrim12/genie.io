@@ -26,6 +26,7 @@ def main():
             options=None,
             save_traces=True
         )
+        # TODO: convert to a tflite model
 
     # Run a CLI session based on the trained model
     cli = CLI(ginny_model)

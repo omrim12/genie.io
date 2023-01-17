@@ -55,6 +55,5 @@ def load_dataset(ds_type: str):
         # sampling dataset size
         if dataset.shape[0] % DATASET_BATCH == 0:
             LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
-
     dataset_file.close()
     return dataset, tags

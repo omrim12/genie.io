@@ -1,6 +1,7 @@
 from termcolor import cprint
-from cnn_utils import classify_client_input
 from img_utils import analyze_food_img
+from cnn_utils import classify_client_input
+from edamam_api_utils import prompt_food_info
 
 
 class CLI:
@@ -30,10 +31,8 @@ class CLI:
                     # Convert given image to numpy array
                     image_array = analyze_food_img(command[1])
                     if image_array is not None:
-                        cprint(f"Your image has been classified as "
-                               f"{classify_client_input(image_array, self.ginny_model)}!\n",
-                               "green")
-                        # TODO: add Edamam API data regarding corresponding image's food label
+                        cprint(classify_client_input(image_array=image_array, cnn_model=self.ginny_model), 'green')
+                        # prompt_food_info(classify_client_input(image_array=image_array, cnn_model=self.ginny_model))
                     else:
                         cprint(f"Invalid path to image given. Please try again\n", "red")
 
