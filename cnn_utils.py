@@ -51,6 +51,7 @@ def train_by_type(
     outputs = layers.Dense(FOOD_TYPES, activation=output_act)(X)
 
     # Initialize model derived from CNN results
+    # TODO: consider adding regularization param
     model = keras.Model(inputs=inputs, outputs=outputs)
 
     # Summarize results from CNN
