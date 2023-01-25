@@ -70,7 +70,7 @@ def train_by_type(
 
 
 def cnn_train():
-    cprint('\nAbout to train a new Ginny!', "blue")
+    cprint('\nAbout to train a new genie!', "blue")
 
     # load train + test datasets
     X_train, X_test, y_train, y_test = load_food_101()

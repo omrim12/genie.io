@@ -4,8 +4,8 @@ IMAGES_META = 'images/food-101/food-101/meta'
 IMAGE_SIZE = 28
 FOOD_TYPES = 101
 
-# ginny classifier model filename
-GINNY_NET_FNAME = 'ginny_net.h5'
+# genie classifier model filename
+GENIE_NET_FNAME = 'genie_net.h5'
 
 # CNN variables
 DATASET_BATCH = 10000

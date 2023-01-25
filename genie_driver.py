@@ -6,25 +6,25 @@ from CLI import CLI
 from cnn_utils import cnn_train
 from keras.models import save_model, load_model
 from constants import (
-    GINNY_NET_FNAME
+    GENIE_NET_FNAME
 )
 
 
 def main(args):
     # Initialize CNN model if trained exists
-    if os.path.exists(GINNY_NET_FNAME):
-        if '--new-ginny' in args:
+    if os.path.exists(GENIE_NET_FNAME):
+        if '--new-genie' in args:
             # Train a new CNN model
-            ginny_model = cnn_train()
+            genie_model = cnn_train()
 
             # Delete previous CNN model
-            os.remove(GINNY_NET_FNAME)
+            os.remove(GENIE_NET_FNAME)
 
             # Save new CNN model
             # Save CNN model locally
             save_model(
-                ginny_model,
-                GINNY_NET_FNAME,
+                genie_model,
+                GENIE_NET_FNAME,
                 overwrite=True,
                 include_optimizer=True,
                 save_format=None,
@@ -34,15 +34,15 @@ def main(args):
             )
             # TODO: convert to a tflite model
         else:
-            ginny_model = load_model(GINNY_NET_FNAME)
+            genie_model = load_model(GENIE_NET_FNAME)
     else:
         # Train a new CNN model
-        ginny_model = cnn_train()
+        genie_model = cnn_train()
 
         # Save CNN model locally
         save_model(
-            ginny_model,
-            GINNY_NET_FNAME,
+            genie_model,
+            GENIE_NET_FNAME,
             overwrite=True,
             include_optimizer=True,
             save_format=None,
@@ -54,7 +54,7 @@ def main(args):
 
     # Run a CLI session based on the trained model
     if '--cli-mode' in args:
-        cli = CLI(ginny_model)
+        cli = CLI(genie_model)
         cli.session()
 
 

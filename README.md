@@ -1,7 +1,7 @@
-## Ginny.io
+## genie.io
 ### Pre-requisites:
 - download [food-101](https://www.kaggle.com/datasets/kmader/food41) images datasets to this path
-### Get started with ginny running following commands:
+### Get started with genie running following commands:
 - create a virtualenv:
 ```bash
 python -m venv venv && source venv/bin/activate
@@ -11,11 +11,11 @@ python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ```
 *Note: app requires python version>=3.10*
-- run ginny in CLI mode:
+- run genie in CLI mode:
 ```bash
-python ginny_driver.py --cli-mode
+python genie_driver.py --cli-mode
 ```
-- train a new ginny CNN model:
+- train a new genie CNN model:
 ```bash
-python ginny_driver.py --new-ginny
+python genie_driver.py --new-genie
 ```

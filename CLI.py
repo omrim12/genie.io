@@ -7,11 +7,11 @@ from edamam_api_utils import get_food_info, get_recipes_info
 class CLI:
     """
     This class provides a CLI instance
-    for interacting with ginny.io food image classifier
+    for interacting with genie.io food image classifier
     using Edamame API analyzed food type data specs
     """
-    def __init__(self, ginny_model):
-        self.ginny_model = ginny_model
+    def __init__(self, genie_model):
+        self.genie_model = genie_model
 
     def session(self):
         exit_cli = False
@@ -31,7 +31,7 @@ class CLI:
                     # Convert given image to numpy array
                     image_array = analyze_food_img(command[1])
                     if image_array is not None:
-                        food_type = classify_client_input(image_array=image_array, cnn_model=self.ginny_model)
+                        food_type = classify_client_input(image_array=image_array, cnn_model=self.genie_model)
                         self.__prompt_food_data(food_type=food_type)
                     else:
                         cprint(f"Invalid path to image given. Please try again\n", "red")
