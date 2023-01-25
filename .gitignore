@@ -16,7 +16,6 @@ images
 
 # client input images
 *.jpg
-*.png
 
 # cnn model files
 *.h5
