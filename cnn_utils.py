@@ -37,11 +37,11 @@ def train_by_type(
     inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1))
 
     # Run convolution & max-pooling
-    X = layers.Conv2D(filters=32, kernel_size=(3, 3), activation=layer_act, padding=conv_type)(inputs)
+    X = layers.Conv2D(filters=64, kernel_size=(4, 4), activation=layer_act, padding=conv_type)(inputs)
     X = layers.MaxPooling2D(pool_size=2)(X)
-    X = layers.Conv2D(filters=64, kernel_size=(3, 3), activation=layer_act, padding=conv_type)(X)
+    X = layers.Conv2D(filters=128, kernel_size=(4, 4), activation=layer_act, padding=conv_type)(X)
     X = layers.MaxPooling2D(pool_size=2)(X)
-    X = layers.Conv2D(filters=128, kernel_size=(3, 3), activation=layer_act, padding=conv_type)(X)
+    X = layers.Conv2D(filters=256, kernel_size=(4, 4), activation=layer_act, padding=conv_type)(X)
 
     # Flatten output layer (a KerasTensor) from CNN to pass output data
     # to NN output dense layer (knows only to receive a vector)
@@ -58,10 +58,10 @@ def train_by_type(
     model.summary()
 
     # Running NN simulation on trained model derived from CNN
-    model.compile(optimizer='rmsprop',
+    model.compile(optimizer='adam',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
-    model.fit(X_train, y_train, epochs=epoch, batch_size=batch_size)  # TODO: consider moving to DATASET_BATCH
+    model.fit(X_train, y_train, epochs=epoch, batch_size=batch_size)
 
     # Computing loss & accuracy over the entire test set
     test_loss, test_acc = model.evaluate(X_test, y_test)

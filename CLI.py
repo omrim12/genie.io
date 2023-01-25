@@ -1,7 +1,7 @@
 from termcolor import cprint
 from img_utils import analyze_food_img
 from cnn_utils import classify_client_input
-from edamam_api_utils import prompt_food_info
+from edamam_api_utils import get_food_info, get_recipes_info
 
 
 class CLI:
@@ -31,8 +31,8 @@ class CLI:
                     # Convert given image to numpy array
                     image_array = analyze_food_img(command[1])
                     if image_array is not None:
-                        cprint(classify_client_input(image_array=image_array, cnn_model=self.ginny_model), 'green')
-                        # prompt_food_info(classify_client_input(image_array=image_array, cnn_model=self.ginny_model))
+                        food_type = classify_client_input(image_array=image_array, cnn_model=self.ginny_model)
+                        self.__prompt_food_data(food_type=food_type)
                     else:
                         cprint(f"Invalid path to image given. Please try again\n", "red")
 
@@ -48,3 +48,10 @@ class CLI:
                 "#> wish <food_image_path> - classify food input image\n"
                 "#> exit                        - exit CLI session\n"
                 "#> help / <any-other-command>  - show usage options\n")
+
+    @staticmethod
+    def __prompt_food_data(food_type):
+        cprint(f"Your image has been classified as {food_type}!\n"
+               f"Here are some {food_type} recipes to get started:\n", "green")
+        cprint(get_recipes_info(food_type), color="green")
+        # TODO: add prompt for food data once table code is created
