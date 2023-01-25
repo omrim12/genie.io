@@ -1,4 +1,5 @@
 ## genie.io
+![genie image](genie_img.png)
 ### Pre-requisites:
 - download [food-101](https://www.kaggle.com/datasets/kmader/food41) images datasets to this path
 ### Get started with genie running following commands:
