@@ -1,4 +1,3 @@
-from termcolor import cprint
 from prettytable import PrettyTable
 from py_edamam import Edamam
 from constants import (
@@ -54,7 +53,7 @@ def parse_recipes_data(recipes_raw):
     # adjust table columns width
     recipes_table._max_width = {
         f"Column {i+1}: {TABLE_COLUMN_WIDTH}"
-        for i in range(len(recipes_raw))
+        for i in range(len(recipes_table.field_names))
     }
 
     return recipes_table

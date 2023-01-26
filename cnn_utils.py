@@ -1,15 +1,16 @@
 import logging
 import numpy as np
-import tensorflow as tf
 from keras import layers
-from tensorflow import keras
 from termcolor import cprint
+from tensorflow import keras
+from keras import regularizers
 from data_utils import load_food_101
 from tag_utils import get_labels_list
 from constants import (
     IMAGE_SIZE,
     FOOD_TYPES,
-    DATASET_BATCH
+    CONV_TYPE,
+    EPOCH
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -48,17 +49,19 @@ def train_by_type(
     X = layers.Flatten()(X)
 
     # Calculating outputs from NN dense layer
-    outputs = layers.Dense(FOOD_TYPES, activation=output_act)(X)
+    outputs = layers.Dense(
+        FOOD_TYPES,
+        activation=output_act
+    )(X)
 
     # Initialize model derived from CNN results
-    # TODO: consider adding regularization param
     model = keras.Model(inputs=inputs, outputs=outputs)
 
     # Summarize results from CNN
     model.summary()
 
     # Running NN simulation on trained model derived from CNN
-    model.compile(optimizer='adam',
+    model.compile(optimizer='rmsprop',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
     model.fit(X_train, y_train, epochs=epoch, batch_size=batch_size)
@@ -75,21 +78,10 @@ def cnn_train():
     # load train + test datasets
     X_train, X_test, y_train, y_test = load_food_101()
 
-    # a. Training CNN "same" using the food 101 dataset
+    # Training CNN using the food 101 dataset
     LOGGER.info("--- Running CNN 'same' learning session ---")
-    same_model, same_loss, same_acc = train_by_type(X_train, y_train,
+    model, model_loss, model_acc = train_by_type(X_train, y_train,
                                                     X_test, y_test,
-                                                    conv_type='same',
-                                                    epoch=70)
-
-    # Training CNN "valid" using the food 101 dataset
-    LOGGER.info("--- Running CNN 'valid' learning session ---")
-    valid_model, valid_loss, valid_acc = train_by_type(X_train, y_train,
-                                                       X_test, y_test,
-                                                       conv_type='valid')
-
-    # Determine best model by model accuracy
-    if valid_acc > same_acc:
-        return valid_model
-
-    return same_model
+                                                    conv_type=CONV_TYPE,
+                                                    epoch=EPOCH)
+    return model, model_loss, model_acc
