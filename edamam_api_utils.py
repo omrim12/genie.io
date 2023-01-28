@@ -1,9 +1,14 @@
+import logging
 from prettytable import PrettyTable
 from py_edamam import Edamam
 from constants import (
     EDAMAM_API,
     TABLE_COLUMN_WIDTH
 )
+from urllib3.exceptions import HTTPError
+
+LOGGER = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 def edamam_api_recipes_client():
@@ -20,16 +25,11 @@ def edamam_api_food_client():
     )
 
 
-def parse_recipe_ingredients(recipe_raw):
-    return "\n".join(recipe_raw['recipe']['ingredientLines'])
-
-
 def parse_recipes_data(recipes_raw):
     # init recipes table with headers
     recipes_table = PrettyTable()
     recipes_table.field_names = [
         'Recipe name',
-        # 'Recipe ingredients',
         'Cuisine',
         'Recipe source'
     ]
@@ -38,14 +38,12 @@ def parse_recipes_data(recipes_raw):
     for recipe in recipes_raw:
         # parse recipe info
         recipe_name = recipe['recipe']['label']
-        # recipe_ingredients = parse_recipe_ingredients(recipe)
         recipe_cuisine = recipe['recipe']['cuisineType'][0]
         recipe_source = recipe['recipe']['url']
 
         # add to recipes table
         recipes_table.add_row([
             recipe_name,
-            # recipe_ingredients,
             recipe_cuisine,
             recipe_source
         ])
@@ -72,12 +70,17 @@ def get_recipes_info(food_label):
     # init api client instance
     recipes_api_client = edamam_api_recipes_client()
 
-    # query edamam api food and recipes according to given label
-    recipes_callback = recipes_api_client.search_recipe(food_label)
+    try:
+        # query edamam api food and recipes according to given label
+        recipes_callback = recipes_api_client.search_recipe(food_label)
 
-    # create table
-    recipes_table = parse_recipes_data(recipes_callback['hits'])
-    return recipes_table
+        # create table
+        recipes_table = parse_recipes_data(recipes_callback['hits'])
+
+        return recipes_table
+
+    except HTTPError as http_err:
+        LOGGER.error(f"Failed to establish connection with API: {http_err}")
 
 
 def get_food_info(food_label):
@@ -88,9 +91,14 @@ def get_food_info(food_label):
     # init api client instances
     food_api_client = edamam_api_food_client()
 
-    # query edamam api food and recipes according to given label
-    food_callback = food_api_client.search_food(food_label)
+    try:
+        # query edamam api food and recipes according to given label
+        food_callback = food_api_client.search_food(food_label)
 
-    # create table
-    food_table = parse_food_data(food_callback)
-    return food_table
+        # create table
+        food_table = parse_food_data(food_callback)
+
+        return food_table
+
+    except HTTPError as http_err:
+        LOGGER.error(f"Failed to establish connection with API: {http_err}")
