@@ -39,7 +39,7 @@ class CLI:
                     else:
                         cprint(f"Invalid path to image given. Please try again\n", "red")
 
-            # Produce tfile model
+            # Produce tflite model
             elif command[0] == 'tflite':
                 if len(command) != 1:
                     continue
@@ -75,5 +75,5 @@ class CLI:
     def __prompt_food_data(food_type):
         cprint(f"Your image has been classified as {food_type}!\n"
                f"Here are some {food_type} recipes to get started:\n", "green")
-        cprint(get_recipes_info(food_type), color="green")
-        # TODO: add prompt for food data once table code is created
+        cprint(get_recipes_info(food_label=food_type), color="green")
+

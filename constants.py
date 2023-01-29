@@ -11,7 +11,7 @@ GENIE_SCORE_FNAME = 'genie_res.json'
 # CNN variables
 DATASET_BATCH = 10000
 EPOCH = 50
-CONV_TYPE = 'same'
+CONV_TYPE = 'valid'
 
 # Edamam API variables
 EDAMAM_API = {

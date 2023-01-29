@@ -79,9 +79,9 @@ def cnn_train():
     X_train, X_test, y_train, y_test = load_food_101()
 
     # Training CNN using the food 101 dataset
-    LOGGER.info("--- Running CNN 'same' learning session ---")
+    LOGGER.info(f"--- Running CNN '{CONV_TYPE}' learning session ---")
     model, model_loss, model_acc = train_by_type(X_train, y_train,
-                                                    X_test, y_test,
-                                                    conv_type=CONV_TYPE,
-                                                    epoch=EPOCH)
+                                                 X_test, y_test,
+                                                 conv_type=CONV_TYPE,
+                                                 epoch=EPOCH)
     return model, model_loss, model_acc

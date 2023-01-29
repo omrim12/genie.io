@@ -58,7 +58,7 @@ def parse_recipes_data(recipes_raw):
 
 
 def parse_food_data(food_raw):
-    # TODO: create food table for food callback
+    # TODO: optionally parse food data callback
     return PrettyTable()
 
 
