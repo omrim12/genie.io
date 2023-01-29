@@ -19,4 +19,7 @@ images
 *.jpeg
 
 # cnn model files
-*.h5
+genie_net.h5
+
+# cnn results
+genie_res.json
