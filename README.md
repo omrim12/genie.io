@@ -16,6 +16,10 @@ pip install -r requirements.txt
 ```bash
 python genie_driver.py --cli-mode
 ```
+- run genie in REST API mode:
+```bash
+python genie_driver.py --api-mode
+```
 - train a new genie CNN model:
 ```bash
 python genie_driver.py --new-genie

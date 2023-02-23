@@ -1,10 +1,9 @@
 import os
 import sys
 from termcolor import cprint
-from file_utils import convert_genie
-from img_utils import analyze_food_img
-from cnn_utils import classify_client_input
-from edamam_api_utils import get_food_info, get_recipes_info
+from utils.img_utils import analyze_food_img
+from utils.cnn_utils import classify_client_input
+from utils.edamam_api_utils import get_recipes_info
 
 
 class CLI:
@@ -39,13 +38,6 @@ class CLI:
                     else:
                         cprint(f"Invalid path to image given. Please try again\n", "red")
 
-            # Produce tflite model
-            elif command[0] == 'tflite':
-                if len(command) != 1:
-                    continue
-                convert_genie(genie_model=self.genie_model)
-                cprint("Converted genie model to .tflite", 'green')
-
             # Clear screen option
             elif command[0] == 'clear':
                 if len(command) != 1:
@@ -67,7 +59,6 @@ class CLI:
         return ("\n          ~~~~~~ CLI usage options: ~~~~~~\n"
                 "#> wish <food_image_path>      - classify food input image\n"
                 "#> clear / cls                 - clean console output\n"
-                "#> tflite                      - convert model to .tflite\n"
                 "#> exit                        - exit CLI session\n"
                 "#> help / <any-other-command>  - show usage options\n")
 
