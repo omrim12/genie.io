@@ -11,9 +11,7 @@ from constants import (
     CONV_TYPE,
     EPOCH,
     KERNEL_SIZE,
-    FILTERS,
-    DROPOUT_PROB,
-    ALPHA
+    FILTERS
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -30,6 +28,7 @@ def classify_client_input(image_array: np.array, cnn_model) -> str:
 
 def train_by_type(
         X_train, y_train,
+        X_valid, y_valid,
         X_test, y_test,
         conv_type,
         epoch=20,
@@ -60,14 +59,16 @@ def train_by_type(
     # to NN output dense layer (knows only to receive a vector)
     X = layers.Flatten()(X)
 
-    # Define a dropout layer to prevent over-fitting
-    # X = layers.Dropout(DROPOUT_PROB)(X)
+    # Adding a Dense layer while applying regularization to prevent
+    # over-fitting
+    X = layers.Dense(units=IMAGE_SIZE ** 2,
+                     activation=layer_act,
+                     kernel_regularizer=keras.regularizers.L1())(X)
 
     # Calculating outputs from NN dense layer
     outputs = layers.Dense(
         FOOD_TYPES,
-        activation=output_act
-    )(X)
+        activation=output_act)(X)
 
     # Initialize model from feature maps results
     # and other defined layers
@@ -77,11 +78,12 @@ def train_by_type(
     model.summary()
 
     # Training CNN model based on optimization techniques
-    opt = keras.optimizers.RMSprop(learning_rate=ALPHA)
-    model.compile(optimizer=opt,
+    model.compile(optimizer='rmsprop',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
-    model.fit(X_train, y_train, epochs=epoch, batch_size=batch_size)
+    model.fit(X_train, y_train,
+              epochs=epoch, batch_size=batch_size,
+              validation_data=(X_valid, y_valid))
 
     # Computing loss & accuracy over the entire test set
     test_loss, test_acc = model.evaluate(X_test, y_test)
@@ -92,12 +94,13 @@ def train_by_type(
 def cnn_train():
     cprint('\nAbout to train a new genie!', "blue")
 
-    # load train + test datasets
-    X_train, X_test, y_train, y_test = load_food_101()
+    # load train + valid + test datasets
+    X_train, X_valid, X_test, y_train, y_valid, y_test = load_food_101()
 
     # Training CNN using the food 101 dataset
     LOGGER.info(f"--- Running CNN '{CONV_TYPE}' learning session ---")
     model, model_loss, model_acc = train_by_type(X_train, y_train,
+                                                 X_valid, y_valid,
                                                  X_test, y_test,
                                                  conv_type=CONV_TYPE,
                                                  epoch=EPOCH)

@@ -20,10 +20,16 @@ def load_food_101():
     executor = ThreadPoolExecutor()
     res1 = executor.submit(load_dataset, 'train')
     res2 = executor.submit(load_dataset, 'test')
-    X_train, y_train = res1.result()
+    X_train_valid, y_train_valid = res1.result()
     X_test, y_test = res2.result()
 
-    return X_train, X_test, y_train, y_test
+    # split train and validation datasets
+    train_valid_segment = int(np.floor(X_train_valid.shape[0] * 0.8))
+    X_train = X_train_valid[:train_valid_segment]
+    X_valid = X_train_valid[train_valid_segment:]
+    y_train = y_train_valid[:train_valid_segment]
+    y_valid = y_train_valid[train_valid_segment:]
+    return X_train, X_valid, X_test, y_train, y_valid, y_test
 
 
 def load_dataset(ds_type: str):
@@ -54,12 +60,10 @@ def load_dataset(ds_type: str):
         tags = np.concatenate((tags, img_tag), axis=0)
 
         # sampling dataset size
-        if ds_type == 'train' and dataset.shape[0] == 4500:
+        if dataset.shape[0] == 4500 and ds_type == 'train':
             break
-        if ds_type == 'test' and dataset.shape[0] == 1500:
+            # LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
+        if dataset.shape[0] == 1500 and ds_type == 'test':
             break
-        # if dataset.shape[0] % subset_size == 0:
-        #     break
-        #     LOGGER.info(f'{dataset.shape[0]} images loaded to {ds_type} dataset')
     dataset_file.close()
     return dataset, tags
